@@ -55,4 +55,55 @@ Route の仕事は Frontend からの要請に合わせて Routing する。
 ### Blade
 
 -   HTML, CSS, JS はもちろん PHP コードも使うことができる。
--
+-   Header, Section, Footer に分けて実装。
+-   https://laravel.com/docs/12.x/blade#section-directives
+
+### Controller
+
+-   ユーザーが Request を送るとその Request の流れを制御し Controller に移動する。
+    -   Controller はその Request をどのように処理すべきかを決定する。
+-   app->http->cotroller
+-   php artisan make:controller --help で命令語を把握する。
+-   Single Action Controller は一般 Controller とは違って invoke Method 一つだけを持ちます。
+
+-   Resource Controller
+    -   php artisan make:controller [Controller_name] -r
+    -   CRUD の Resource を自動的に作ってくれる。
+        -   Route::resource('/blog', BlogController::class);
+
+### Database
+
+-   Migration
+    -   php artisan migrate:refresh -> Migration を Rollback して最初から Migration をやり直すこと。
+
+### Model
+
+-   php artisan make:model
+-   php artisan make:model -m -> migration ファイルも一緒に作成してくれる。
+
+-   Laravel で Model は Database。
+    -   Database の Table の属性と構成要素を決める。
+-   Seeder
+    -   php artisan make:seeder [seeder_name]
+    -   php artisan db:seed
+-   Factories
+    -   php artisan make:factory [factory_name]
+    -   name_rules -> ex) UserFactory
+-   すでに存在する Table に新しい Column を追加する場合。
+
+    -   php artisan make:migrate [name] --table=[追加したい Table 名]
+
+-   SoftDelete
+    -   Model に SoftDelete を適用すると、Delete しても完全に削除されるのだはなく Delete した時間が残ります、
+        これによって[onlyTrashed()->get()]method を使って以前削除した Data を確認できます。
+    -   復元する方法
+        -   withTrashed()->find([number])->restore();で SoftDelete されていた Data を復元できる。
+
+### Form and Validation
+
+-   CSRF
+    -   Token を生成する。
+    -   Laravel は自動的に Unique な Token を作成し UserSession に保存する。
+        -   CSRF 攻撃を防ぐために CSRF Token を使用する。
+        -   Form を通じて Data を送るときにこの CSRF Token を一緒に送って Request が信じられるのかを確認する。
+        -   <input type="hidden" name="__token" value="{{ csrf_token() }}">あるいは＠csrf を追加して使用する。
