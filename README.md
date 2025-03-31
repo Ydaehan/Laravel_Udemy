@@ -107,3 +107,5 @@ Route の仕事は Frontend からの要請に合わせて Routing する。
         -   CSRF 攻撃を防ぐために CSRF Token を使用する。
         -   Form を通じて Data を送るときにこの CSRF Token を一緒に送って Request が信じられるのかを確認する。
         -   <input type="hidden" name="__token" value="{{ csrf_token() }}">あるいは＠csrf を追加して使用する。
+
+## CRUD

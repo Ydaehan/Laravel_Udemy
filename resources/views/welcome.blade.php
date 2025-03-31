@@ -18,11 +18,11 @@
 </section>
 @include('gallery')
 @endsection
-
+{{--
 @push('scripts')
 <script>
 	$(document).ready(function(){
 				alert("This script is homepage!");
 			})
 </script>
-@endpush
+@endpush --}}
