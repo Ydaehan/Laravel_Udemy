@@ -108,4 +108,59 @@ Route の仕事は Frontend からの要請に合わせて Routing する。
         -   Form を通じて Data を送るときにこの CSRF Token を一緒に送って Request が信じられるのかを確認する。
         -   <input type="hidden" name="__token" value="{{ csrf_token() }}">あるいは＠csrf を追加して使用する。
 
-## CRUD
+## Eloquent ORM
+
+-   1 : 1
+    -   hasOne()
+        -   親の Model に書く
+        -   ex) 一つのユーザーは一つの Profile を持つ
+    -   belongsTo()
+        -   子の Model に書く
+        -   ex)　 Profile Model で User Model を参照
+-   1 : N
+    -   hasMany()
+        -   親の Model に書く
+        -   ex)　一つの User が一個以上の Post を持つことができる。
+    -   belongsTo()
+        -   子の Model に書く
+        -   ex)　 Post は一人の User に属する。
+-   N : N
+    -   belongsToMany()
+        -   両方の Model 全部に書く
+        -   両方の Model の間に N：N の関係を設定。
+        -   一人の User は一個以上の Role を持つことができるし、一つの Role も一人以上の User を持つことができる。
+        -   中間テーブルが必要
+            -   role_user(foreign_key[user_id],role_id)
+-   hasMany Trough
+    -   中間テーブルを通して Search
+    -   一つの国家に属する User が作成した全ての Post を照会
+    -   ex) Country->User->Post
+-   Polymorphic Relationships
+    -   Post と Video は両方とも Comment を持つことができる。
+    -   一つの Comment が色んな Model（Post,Video)に連結可能。
+    -   morphTo()
+        -   子 Model に書く
+        -   commentable という Column を通じて Dynamic に関係を設定。
+    -   morphMany()
+        -   親 Model に書く
+        -   Comment Model をポリモーフィズムに連結
+
+## Middleware
+
+-   Middleware は HTTP Request と Response の間で特定の作業をする Filter の役割をする。
+
+    -   ex)
+        -   User の Login 可否を確認(auth Middleware)
+        -   特定した要請を Logging(log Middleware)
+        -   サイトがメンテナンスモードなのかを確認(maintenance Middleware)
+
+-   Controller Middleware
+    -   特定した Controller の内部でのみ動作する Middleware
+    -   \_\_construct()の内部で Middleware（）method を使って適用する。
+    -   特定 Method にのみ適用する例
+        -   $this->middleware('auth')->only('edit','update');
+    -   特定 Method を除外する例
+        -   $this->middleware('auth')->except('index');
+-   Global Middleware
+    -   全ての HTTP Request に対して常に実行される Middleware
+    -   app/Http/Kernel.php の$middleware 配列に登録
